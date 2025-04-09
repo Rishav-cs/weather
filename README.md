@@ -26,7 +26,8 @@ A sleek and modern Weather Dashboard built with **React.js** that lets you check
 
 ---
 
-## 🖼️ Screenshots
+## 🖼️ ![image](https://github.com/user-attachments/assets/e816de05-5e86-44b8-a1df-254616a3ad10)
+
 
 > _(Add your screenshots here if you want, like UI in both light and dark mode)_
 

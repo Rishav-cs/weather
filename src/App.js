@@ -7,8 +7,6 @@ import ToggleTheme from "./components/ToggleTheme";
 import Loader from "./components/Loader";
 import "./App.css";
 
-const API_KEY = "d91de3a004e26d873b06c828c6841a4e";
-
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
@@ -25,9 +23,7 @@ function App() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-      );
+      const res = await fetch(`http://localhost:5000/weather?city=${city}`);
       if (!res.ok) throw new Error("City not found");
       const data = await res.json();
       setWeatherData(data);
@@ -44,19 +40,22 @@ function App() {
 
   const fetchForecast = async (city) => {
     try {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
-      );
+      const res = await fetch(`http://localhost:5000/forecast?city=${city}`);
       if (!res.ok) throw new Error("Forecast not found");
       const data = await res.json();
-      const filtered = data.list.filter((_, idx) => idx % 8 === 0).map((item) => ({
-        date: new Date(item.dt_txt).toLocaleDateString("en-US", { weekday: "short" }),
-        temp: Math.round(item.main.temp),
-        icon: item.weather[0].icon,
-        condition: item.weather[0].main,
-      }));
+      const filtered = data.list
+        .filter((_, idx) => idx % 8 === 0)
+        .map((item) => ({
+          date: new Date(item.dt_txt).toLocaleDateString("en-US", {
+            weekday: "short",
+          }),
+          temp: Math.round(item.main.temp),
+          icon: item.weather[0].icon,
+          condition: item.weather[0].main,
+        }));
       setForecastData(filtered);
-    } catch {
+    } catch (err) {
+      console.error(err);
       setForecastData([]);
     }
   };
